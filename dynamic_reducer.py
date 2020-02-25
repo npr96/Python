@@ -1,4 +1,4 @@
-#division functionality broken fix at home
+#division functionality does not float fix at home
 opperator_modifier = None
 dynamic_reducer_list = [1,2,3]
 iterated_value = 0 
@@ -21,15 +21,16 @@ def dynamic_reducer(dynamic_reducer_list, opperator_modifier):
             iterated_value = iterated_value * i
         print(iterated_value)
     elif opperator_modifier == '/':
-        for i in dynamic_reducer_list:
-            division_helper_variabl = i
-            division_result = iterated_value // division_helper_variabl
-            iterated_value = i
-            printed_division = printed_division + division_result
-        print(printed_division)
+        iterated_value = dynamic_reducer_list[0]
+        for index, i in enumerate(dynamic_reducer_list):
+            if index < 1:
+                iterated_value = i
+            if index >= 1:
+                iterated_value = iterated_value / i
+        print(iterated_value)
     else:
         return "something went wrong" 
-dynamic_reducer([1,2,3],'/')     
+dynamic_reducer([12,2,3],'/')     
     
 
     
