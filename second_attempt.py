@@ -17,9 +17,11 @@ def custom_iteration_helper_two(iterator_above_above):
         else:
             global digits_container
             digits_string = map(str, digits_container)
-            digits_string_two = ''.join(digits_string)
+            str_placeholder = ''
+            digits_string_two = str_placeholder.join(digits_string)
             gdp_list = gdp_list + [digits_string_two]
             digits_container = []
+            print(gdp_list)
             return gdp_list
                 
 def custom_rip_second_attempt(rip_master,year):
