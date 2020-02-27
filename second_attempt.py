@@ -1,6 +1,29 @@
 #lets rip some fuggin data
+gdp_list = []
+digits_container = []
 
+def custom_iteration_helper(iterator_above):
+    global digits_container
+    if iterator_above.isdigit():
+        digits_container = digits_container + iterator_above.split()
+        return digits_container
+    else:
+        pass
+def custom_iteration_helper_two(iterator_above_above):
+    global gdp_list
+    for i in iterator_above_above:
+        if i.isdigit:
+            custom_iteration_helper(i)
+        else:
+            global digits_container
+            digits_string = map(str, digits_container)
+            digits_string_two = ''.join(digits_string)
+            gdp_list = gdp_list + [digits_string_two]
+            digits_container = []
+            return gdp_list
+                
 def custom_rip_second_attempt(rip_master,year):
+    global gdp_list
     data_source = open('worldbankdata.xml', 'rt')
     data = data_source.read()
     #these rips select the section of data we want
@@ -10,28 +33,10 @@ def custom_rip_second_attempt(rip_master,year):
     rip_3 = rip_3.join(rip_2)
     rip_4 = rip_3.split(year)
     rip_5 = rip_4[0]
-    list_item_container = []
-    gdp_list = []
     for iterator_one in rip_5:
-        for iterator_two in iterator_one:
-            if iterator_two.isdigit():
-                list_item_container = list_item_container + iterator_two.split()
-            else:
-                list_item_string = map(str, list_item_container)
-                list_item_string = ''.join(list_item_string)
-                if list_item_string != '':
-                    list_item_container = int(list_item_string)
-                    list_item_container = [list_item_container]
-                    gdp_list = gdp_list +  list_item_container
-                    break
-                else:
-                    break
-                break
+        custom_iteration_helper_two(iterator_one)
     print(gdp_list)
 custom_rip_second_attempt('>United States<','2019')
-
-
-    
 
 
 #this is a function that takes in two data-sets and regresses them, the two datasets need to have the same length. 
