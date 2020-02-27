@@ -1,3 +1,39 @@
+#lets rip some fuggin data
+
+def custom_rip_second_attempt(rip_master,year):
+    data_source = open('worldbankdata.xml', 'rt')
+    data = data_source.read()
+    #these rips select the section of data we want
+    rip_1 = data.split(rip_master)
+    rip_2 = rip_1[1:]
+    rip_3 = ''
+    rip_3 = rip_3.join(rip_2)
+    rip_4 = rip_3.split(year)
+    rip_5 = rip_4[0]
+    list_item_container = []
+    gdp_list = []
+    for iterator_one in rip_5:
+        for iterator_two in iterator_one:
+            if iterator_two.isdigit():
+                list_item_container = list_item_container + iterator_two.split()
+            else:
+                list_item_string = map(str, list_item_container)
+                list_item_string = ''.join(list_item_string)
+                if list_item_string != '':
+                    list_item_container = int(list_item_string)
+                    list_item_container = [list_item_container]
+                    gdp_list = gdp_list +  list_item_container
+                    break
+                else:
+                    break
+                break
+    print(gdp_list)
+custom_rip_second_attempt('>United States<','2019')
+
+
+    
+
+
 #this is a function that takes in two data-sets and regresses them, the two datasets need to have the same length. 
 from decimal import *
 getcontext().prec = 6
@@ -42,15 +78,15 @@ def regression_function(dependant_variable, independant_variable, summary_indica
     for i in decimal_independant_variable:
         f1.append(i * beta_hat)
 #sum of squares and R squared
-    squares_container = 0
+    sum_of_squares_container = 0
     for i in decimal_dependant_variable:
-        squares_container = (i - mean_of_dependant)**2 + squares_container
-    explained_squares_container = 0
+        sum_of_squares_container = (i - mean_of_dependant)**2 + sum_of_squares_container
+    sum_of_explained_squares_container = 0
     explained_squares_indexor = 0  
     for i in decimal_dependant_variable:
-        explained_squares_container = (i - f1[explained_squares_indexor])
+        sum_of_explained_squares_container = (i - f1[explained_squares_indexor])
         explained_squares_indexor = explained_squares_indexor + 1
-    r_squared = 1 - (explained_squares_container / squares_container)
+    r_squared = 1 - (sum_of_explained_squares_container / sum_of_squares_container)
     print('R-squared: ' + str(r_squared))
         
 
