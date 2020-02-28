@@ -1,5 +1,5 @@
 import cmd, sys
-
+save_file = save_stardew_valley.md
 dictionary_of_sales = {
     'google' : 15,
     'facebook' : 20,
