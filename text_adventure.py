@@ -8,12 +8,12 @@ has gone through some effort to clean it.''',
     '1door' : 'A wooden door with a brass doorknob, you can see light seeping in under the door',
     '1table' : 'A small bedside table with two drawers, and a leaf on top, the drawers are empty',
     '1leaf' : 'A small oak leaf with a dark green color, you notice the veins are quite dark.',
-    '2table' : 'The table is about 3ft in diameter, has three legs, and is wobbly'
-    '2cup' : 'The cup is plastic and empty'
-    '2plate' : 'The plate is clean, but it\'s edges are chipped.'
+    '2table' : 'The table is about 3ft in diameter, has three legs, and is wobbly',
+    '2cup' : 'The cup is plastic and empty',
+    '2plate' : 'The plate is clean, but it\'s edges are chipped.',
     '2painting' : '''The paiting is well made, in contrast with the bare wall it hangs on, the snake \n
 is coiled arround a person\'s arm which is visible in the frame from the arm up. The hand\n
-is holding an appple. '''
+is holding an appple. ''',
 
 }
 dictionary_of_rooms = {
@@ -26,7 +26,8 @@ Cassio watch on the table, the floor is carpeted but threadbare, and there is a 
 of a snake on the wall''',
 }
 dictionary_of_interaction = {
-    "1door" : 'The door swings open easily and you enter the room on the other side'
+    "1door" : 'The door swings open easily and you enter the room on the other side\n',
+    '2bulb' : 'Ouch! the bulb is hot! You unscrew it anyway, and the lights go out.',
 }
 
         
@@ -46,7 +47,7 @@ door to your right and a table to your left. \n'''
             print(dictionary_of_interaction[modify_input(arg)])
             global room_number
             room_number = room_number + 1
-            print(dictionary_of_rooms[modify_input(str(room_number))])
+            print(dictionary_of_rooms[str(room_number)])
         elif arg == bulb:
             if dark_indicator == 'light':
                 global dark_indicator
