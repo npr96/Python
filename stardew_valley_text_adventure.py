@@ -1,17 +1,20 @@
 import cmd
+import random
 dictionary_of_places = {
     'home': '''''',
     'farm': '''''',
     'town': '''''',
     'store': '''''',
-    'bar': ''''''
+    'bar': '''''',
+    'lake': ''''''
 }
 dictionary_of_familiar_places = {
     'home': 'You Return Home',
     'farm': 'You Go To Work On Your Farm',
     'town': 'You Arrive Back In Town',
     'store': 'Pierre greets you',
-    'bar': 'You Arrive at the Bar'
+    'bar': 'You Arrive at the Bar',
+    'lake': 'You Arrive at the Lake',
 }
 dictionary_of_prices = {
     'potato seeds': 2,
@@ -52,15 +55,30 @@ dictionary_of_responces = {
 dictionary_of_actions = {
 
 }
+dictionary_of_beauty = {
+    0: 'You see a small ripple on the lake as a fish catches a bug',
+    1: 'You notice two squirrels mating',
+    2: 'You smell marrigolds on the wind',
+    3: 'The wind blows gently through the trees'
+}
 dictionary_of_been_there = {
     'home': 0,
     'farm': 0,
     'town': 0,
     'store': 0,
-    'bar': 0
+    'bar': 0,
+    'lake': 0
 }
 dictionary_of_sell_prices = {
     'potato seeds': 1
+}
+tuple_of_fishing = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
+                  29, 30, 31, 32, 33, 60, 90, 100)
+dictionary_of_fishing = {
+    'bass': 2,
+    'rainbow_trout': 8,
+    'trout': 20,
+    'garbage': 100
 }
 
 player_name = ''
@@ -87,11 +105,6 @@ def first_day_declutter(arg):
     else:
         return
 def plots_check():
-    if stardew_valley.location_local == 'farm':
-        pass
-    else:
-        print('You need to be at your farm to check plots')
-        return
     print('These are your plots:')
     for key in stardew_valley.dictionary_of_plots_what_seed:
         print(str(key) + ': ' + stardew_valley.dictionary_of_plots_what_seed[key])
@@ -100,12 +113,10 @@ def plots_check():
         print(str(key) + ': ' + str(stardew_valley.dictionary_of_plots_grow_time[key]))
 
 def trees_check():
-    if stardew_valley.location_local == 'farm':
-        pass
-    else:
-        print('You need to be at your farm to check trees')
-        return
     print('There are ' + str(stardew_valley.local_tree_count) + ' left')
+
+def grass_check():
+    print('Your grass is ' + stardew_valley.local_grass + ' to be cut')
 
 
 location = 'farm'
@@ -114,6 +125,7 @@ wallet = 10
 day = 1
 daily_energy = 20
 tree_count = 20
+grass = 'ready'
 
 buy_error = 'You can\'t buy that here, to find out what you can buy, go to the store and type \'stock\''
 class stardew_valley(cmd.Cmd):
@@ -139,6 +151,9 @@ You are left standing infront of you new home (type 'goto home' to enter)
         'hops seeds': 0,
         'daisy': 0,
         'wood': 0,
+        'bass': 0,
+        'trout': 0,
+        'rainbow trout': 0,
     }
     dictionary_of_plots_grow_time = {
         1: 0,
@@ -164,6 +179,10 @@ You are left standing infront of you new home (type 'goto home' to enter)
     local_tree_count = tree_count
     tree_regrowth = 0
     half_tree = 0
+    local_grass = grass
+    grass_grower = 0
+    grass_notifier = 0
+    beauty_index = 0
 
     def do_goto(self, arg):
         stardew_valley.are_sell = 0
@@ -186,7 +205,8 @@ You are left standing infront of you new home (type 'goto home' to enter)
             pass
         else:
             print('It is a bit late you should maybe go to sleep.')
-        if arg == 'farm'  or arg == 'town':
+            return
+        if arg == 'farm'  or arg == 'town' or arg == 'lake':
             stardew_valley.location_local = arg
             stardew_valley.town_loc_local = 'main'
             goto_if_declutter(arg)
@@ -369,17 +389,49 @@ You are left standing infront of you new home (type 'goto home' to enter)
         else:
             print('You want to sleep in your bed')
             return
+        if stardew_valley.local_grass == 'ready':
+            pass
+        else:
+            if stardew_valley.grass_grower < 2:
+                stardew_valley.grass_grower = stardew_valley.grass_grower + 1
+            else:
+                stardew_valley.grass_grower = 0
+                stardew_valley.local_grass = 'ready'
+                stardew_valley.grass_notifier = 1
+        if stardew_valley.local_tree_count < 20:
+            stardew_valley.local_tree_count = stardew_valley.local_tree_count + 1
+            stardew_valley.tree_regrowth = stardew_valley.tree_regrowth + 1
+        else:
+            pass
+        if stardew_valley.local_tree_count < 11:
+            stardew_valley.local_tree_count = stardew_valley.local_tree_count + 4
+            stardew_valley.tree_regrowth = stardew_valley.tree_regrowth + 4
         print('You go to bed')
+        print('While you slept:')
+        print(str(stardew_valley.tree_regrowth) + ' trees grew')
+        if stardew_valley.grass_notifier == 0:
+            pass
+        else:
+            print('Your grass is ready to cut')
+            stardew_valley.grass_notifier = 0
         stardew_valley.time = 1
         stardew_valley.day_local = stardew_valley.day_local + 1
         return
 
     def do_check(self, arg):
+        if stardew_valley.location_local == 'farm':
+            pass
+        else:
+            print('You need to be at your farm to check')
+            return
         if arg == 'plots':
             plots_check()
             return
         if arg == 'trees':
             trees_check()
+            return
+        if arg == 'grass':
+            grass_check()
             return
         else:
             print('You cannot check that (maybe try inspect)')
@@ -414,7 +466,7 @@ You are left standing infront of you new home (type 'goto home' to enter)
             else:
                 trees_left = float(stardew_valley.local_tree_count) + .5 * float(odd_tree)
                 new_trees = input('You will run out of trees before then, would you like to cut ' +
-                                  str(stardew_valley.local_tree_count) + ' instead? (type y/n)')
+                                  str(stardew_valley.local_tree_count) + ' instead? \n(type y/n): ')
                 if new_trees == 'y':
                     print('You cut down ' + str(stardew_valley.local_tree_count) + ' trees taking ' +
                           str(trees_left * 2) + ' hours')
@@ -435,9 +487,73 @@ You are left standing infront of you new home (type 'goto home' to enter)
             stardew_valley.dictionary_of_inventory['wood'] = stardew_valley.dictionary_of_inventory['wood'] + int(trees)
             print('There are ' + str(stardew_valley.local_tree_count) + ' remaining')
             return
+        elif arg == 'grass':
+            if stardew_valley.time <= 13:
+                pass
+            else:
+                print('you don\'t have enought time to cut grass')
+                return
+            if stardew_valley.local_grass == 'ready':
+                print('you cut the grass, it takes 2 hours and you get 2 hay')
+                stardew_valley.local_grass = 'not ready'
+            else:
+                print('the grass is already cut')
+                return
         else:
             print('You can\'t cut that')
             return
+
+    def do_fish(self, arg):
+        if stardew_valley.location_local == 'lake':
+            pass
+        else:
+            print('There is no-where to fish here')
+            return
+        fish_time = input('How many hours would you like to fish? : ')
+        fish_weight = int(fish_time) / 2
+        allowed_pull = int(fish_time) * 3
+        power_switch = 1
+        beauty = 0
+        while power_switch == 1:
+            if beauty % 7 != 0:
+                pass
+            else:
+                if stardew_valley.beauty_index < 4:
+                    pass
+                else:
+                    stardew_valley.beauty_index = 0
+                print(dictionary_of_beauty[stardew_valley.beauty_index])
+                stardew_valley.beauty_index += 1
+            fish_catcher = random.randrange(100)
+            fish_obtain = fish_catcher / fish_weight
+            pull_count = 0
+            s = input('pull? :')
+            if s != 'pull':
+                stardew_valley.time = stardew_valley.time + int(fish_time)
+                return
+            else:
+                if pull_count <= allowed_pull:
+                    pass
+                else:
+                    print('you finish fishing')
+                    stardew_valley.time = stardew_valley.time + int(fish_time)
+                if fish_obtain > dictionary_of_fishing['trout']:
+                    print('You caught some garbage')
+                    beauty += 1
+                elif fish_obtain > dictionary_of_fishing['rainbow_trout']:
+                    print('you caught a trout!')
+                    stardew_valley.dictionary_of_inventory['trout'] += 1
+                    beauty += 1
+                elif fish_obtain > dictionary_of_fishing['bass']:
+                    print('you caught a rainbow-trout!')
+                    stardew_valley.dictionary_of_inventory['rainbow trout'] += 1
+                    beauty += 1
+                else:
+                    print('You caught a bass!')
+                    stardew_valley.dictionary_of_inventory['bass'] += 1
+                    beauty += 1
+
+
 
 
 if __name__ == "__main__":
